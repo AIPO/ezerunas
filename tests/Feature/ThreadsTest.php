@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Thread;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -16,8 +17,10 @@ class ThreadsTest extends TestCase
      */
     public function testUserCanBrowseThreadsTest()
     {
+        $thread = factory(Thread::class)->create();
         $response = $this->get('/threads');
 
         $response->assertStatus(200);
+        $response->assertSee($thread->title);
     }
 }
