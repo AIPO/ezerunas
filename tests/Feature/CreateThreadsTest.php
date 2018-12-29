@@ -6,12 +6,11 @@ use App\Thread;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateThreadsTest extends TestCase
 {
     use DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -26,5 +25,14 @@ class CreateThreadsTest extends TestCase
         $this->get($thread->path())
             ->assertSee($thread->title)
             ->assertSee($thread->body);
+    }
+
+    /**
+     */
+    public function testGuestsMayNotCreateThreads()
+    {
+        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $thread = factory(Thread::class)->make();
+        $this->post('/threads', $thread->toArray());
     }
 }
