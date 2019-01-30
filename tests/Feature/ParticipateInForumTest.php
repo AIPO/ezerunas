@@ -22,11 +22,11 @@ class ParticipateInForumTest extends TestCase
      */
     public function testAuthenticatedUserCanParticipateInForumThreads()
     {
-// user is authenticated
-        $this->be($user = factory(User::class)->create());
-        $thread = factory(Thread::class)->create();
-        $reply = factory(Reply::class)->make();
-        $this->post('/threads/' . $thread->id . '/replies', $reply->toArray());
+        // user is authenticated
+        $this->signIn();
+        $thread = create(Thread::class);
+        $reply = make(Reply::class);
+        $this->post($thread->path() . '/replies', $reply->toArray());
         //on threads/thread id see reply
         $this->get($thread->path())->assertSee($reply->body);
     }
@@ -36,8 +36,7 @@ class ParticipateInForumTest extends TestCase
      */
     public function testUnauthenticatedUsersMayNotAddReplies()
     {
-        $this->withoutExceptionHandling();
         $this->expectException('Illuminate\Auth\AuthenticationException');
-        $this->post('threads/1/replies', []);
+        $this->post('threads/some-channel/1/replies', []);
     }
 }

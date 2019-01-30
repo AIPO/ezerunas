@@ -1,14 +1,9 @@
 <?php
 
 return [
-    'create' => [
-        'title' => 'Pridėti naują temą',
-        'label' => [
-            'title' => 'Tema',
-            'body' => 'Pranešimas',
-
-        ],
-        'submit' => 'Paskelbti'
-
-    ]
+    'create' => 'Pridėti naują temą',
+    'title' => 'Tema',
+    'body' => 'Pranešimas',
+    'placeholder' => "Temos pavadinimas",
+    'submit' => 'Paskelbti'
 ];

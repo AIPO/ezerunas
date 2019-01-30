@@ -17,7 +17,7 @@ class ThreadsTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->thread = factory(Thread::class)->create();
+        $this->thread = create(Thread::class);
     }
 
     /**
@@ -27,26 +27,20 @@ class ThreadsTest extends TestCase
      */
     public function testUserCanBrowseThreadsTest()
     {
-
-        $response = $this->get('/threads');
-
-        $response->assertStatus(200);
-        $response->assertSee($this->thread->title);
-
+        $this->get('/threads')->assertStatus(200)->assertSee($this->thread->title);
     }
 
     public function testUserCanSeeThread()
     {
-        $this->get('/threads/' . $this->thread->id)
+        $this->get($this->thread->path())
             ->assertStatus(200)
             ->assertSee($this->thread->title);
     }
 
     public function testUserCanReadRepliesPerThread()
     {
-        $reply = factory(Reply::class)
-            ->create(['thread_id' => $this->thread->id]);
-        $this->get('/threads/' . $this->thread->id)
+        $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
+        $this->get($this->thread->path())
             ->assertSee($reply->body);
     }
 }
