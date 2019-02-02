@@ -33,5 +33,9 @@ const app = new Vue({
 });
 
 $(document).ready(function() {
-    $('#editor').summernote();
+    $('#editor').summernote(
+        {
+            height:200,
+        }
+    );
 });

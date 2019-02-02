@@ -64980,7 +64980,9 @@ var app = new Vue({
   el: '#app'
 });
 $(document).ready(function () {
-  $('#editor').summernote();
+  $('#editor').summernote({
+    height: 200
+  });
 });
 
 /***/ }),

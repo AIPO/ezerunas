@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Thread;
+use App\Channel;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
@@ -20,9 +22,9 @@ class CreateThreadsTest extends TestCase
         //Create user
         $this->signIn();
         $thread = create(Thread::class);
-        $this->post('/threads', $thread->toArray());
+        $response =$this->post('/threads', $thread->toArray());
         //dd($thread->path());
-        $this->get($thread->path())
+        $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
@@ -34,5 +36,32 @@ class CreateThreadsTest extends TestCase
         $this->expectException('Illuminate\Auth\AuthenticationException');
         $this->post('/threads')->assertRedirect('/login');
         $this->get('/threads/create')->assertRedirect('/login');
+    }
+    public function test_a_thread_requires_title()
+    {
+        $this->publishThread(['title' => null])
+      ->assertSessionHasErrors(['title']);
+    }
+    public function test_a_thread_requires_body()
+    {
+        $this->publishThread(['body' => null])
+      ->assertSessionHasErrors(['body']);
+    }
+    public function test_a_thread_requires_channel_id()
+    {
+        factory(Channel::class, 2)->create();
+        $this->publishThread(['channel_id' => null])->assertSessionHasErrors(['channel_id']);
+        $this->publishThread(['channel_id' => 2])->assertSessionHasErrors(['channel_id']);
+    }
+    public function publishThread($overrides=[])
+    {
+        $this->withExceptionHandling();
+        $this->expectException('Illuminate\Validation\ValidationException');
+        $this->signIn();
+
+        $thread = make(Thread::class, $overrides);
+        //dd($thread);
+
+        return $this->post('/threads', $thread->toArray());
     }
 }
