@@ -47,8 +47,10 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/threads">
                                     @lang('nav.all_threads')</a>
-                                    <a class="dropdown-item" href="/threads?by={{auth()->user()->name}}">
-                                        @lang('nav._user_threads')</a>
+                                    @if(auth()->check())
+                                        <a class="dropdown-item" href="/threads?by={{auth()->user()->name}}">
+                                            @lang('nav._user_threads')</a>
+                                            @endif
                             </div>
                         </li>
                         <li class="nav-item dropdown">
