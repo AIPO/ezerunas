@@ -2,12 +2,13 @@
 
 namespace App\Filters;
 
-use Illiminate\Http\Request;
+use Illuminate\Http\Request;
 
 abstract class Filters
 {
     protected $request;
     protected $builder;
+    protected $filters=[];
 
     public function __construct(Request $request)
     {
@@ -16,9 +17,16 @@ abstract class Filters
     public function apply($builder)
     {
         $this->builder = $builder;
-        if ($this->request->has('by')) {
-            $this->by($this->request->by);
-            return $this->builder;
+
+        foreach ($this->filters as $filter) {
+            if ($this->hasFilter($filter)) {
+                $this->$filter($this->request->filter);
+            }
         }
+        return $this->builder;
+    }
+    protected function hasFilter($filter)
+    {
+        return method_exists($this, $filter)&& $this->request->has($filter);
     }
 }

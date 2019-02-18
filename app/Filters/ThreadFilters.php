@@ -7,7 +7,7 @@ use App\Filters\Filters;
 
 class ThreadFilters extends Filters
 {
-
+protected $filters =['by']; 
     protected function by($username)
     {
         $user = User::where('name', $username)->firstOrFail();
