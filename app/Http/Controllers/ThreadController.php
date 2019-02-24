@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Thread;
 use App\Channel;
 use App\Filters\ThreadFilters;
+use App\Thread;
 use Illuminate\Http\Request;
 
 class ThreadController extends Controller
@@ -23,12 +21,7 @@ class ThreadController extends Controller
      */
     public function index(Channel $channel, ThreadFilters $filters)
     {
-        if ($channel->exists) {
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();
-        }
-        $threads = $threads->filter($filters)->get();
+        $threads = $this->getThreads($channel, $filters);
 
         // //if request('by'), we should filter by username
         // if($username=request('by')){
@@ -60,17 +53,17 @@ class ThreadController extends Controller
     {
         $this->validate(
             $request,
-         [
-             'title'=> 'required',
-             'body' =>'required',
-             'channel_id'=>'required|exists:channels,id'
-         ]
+            [
+                'title' => 'required',
+                'body' => 'required',
+                'channel_id' => 'required|exists:channels,id',
+            ]
         );
         $thread = Thread::create([
             'user_id' => auth()->id(),
             'channel_id' => request('channel_id'),
             'title' => request('title'),
-            'body' => request('body')
+            'body' => request('body'),
         ]);
         return redirect($thread->path());
     }
@@ -119,5 +112,15 @@ class ThreadController extends Controller
     public function destroy(Thread $thread)
     {
         //
+    }
+
+/** */
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
+    {
+        $threads = Thread::latest()->filter($filters);
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+        return $threads->get();
     }
 }

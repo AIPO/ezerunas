@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 abstract class Filters
 {
     protected $request;
+    /**
+     * The Eloquent builder.
+     *
+     * @var \Illuminate\Database\Eloquent\Builder
+     */
     protected $builder;
     protected $filters=[];
 
@@ -17,16 +22,16 @@ abstract class Filters
     public function apply($builder)
     {
         $this->builder = $builder;
-
-        foreach ($this->filters as $filter) {
-            if ($this->hasFilter($filter)) {
-                $this->$filter($this->request->filter);
+   //     dd($this->request->only($this->filters));
+        foreach ($this->getFilters() as $filter=>$value) {
+            if (method_exists($this, $filter)) {
+                 $this->$filter($value);
             }
+           
         }
         return $this->builder;
     }
-    protected function hasFilter($filter)
-    {
-        return method_exists($this, $filter)&& $this->request->has($filter);
+    public function getFilters(){
+        return $this->request->only($this->filters);
     }
 }

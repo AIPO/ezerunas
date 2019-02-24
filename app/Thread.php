@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filters\ThreadFilters;
 
 /**
  * @method static create(array $array)
@@ -42,7 +44,7 @@ class Thread extends Model
     {
         $this->replies()->create($reply);
     }
-    public function scopeFilter($query, $filters)
+    public function scopeFilter($query, ThreadFilters $filters)
     {
         return $filters->apply($query);
     }
