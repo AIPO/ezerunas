@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filters\ThreadFilters;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static create(array $array)
@@ -12,7 +11,15 @@ use App\Filters\ThreadFilters;
 class Thread extends Model
 {
     protected $guarded = [];
-    protected $fillable =['title','channel_id','user_id', 'body'];
+    protected $fillable = ['title', 'channel_id', 'user_id', 'body'];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('replyCount', function ($builder) {
+            $builder->withCount('replies');
+        });
+    }
 
     /**
      * helper to link to /threads/{id}
@@ -47,5 +54,9 @@ class Thread extends Model
     public function scopeFilter($query, ThreadFilters $filters)
     {
         return $filters->apply($query);
+    }
+    public function getReplyCount()
+    {
+        $this->replies()->count();
     }
 }

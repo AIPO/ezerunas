@@ -1,21 +1,15 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: povilas
- * Date: 18.12.29
- * Time: 23.05
- */
-/**
  * @param $class
  * @param array $attributes
  * @return mixed
  */
-function create($class, $attributes = [])
+function create($class, $attributes = [], $times = null)
 {
-    return factory($class)->create($attributes);
+    return factory($class, $times)->create($attributes);
 }
 
-function make($class, $attributes = [])
+function make($class, $attributes = [], $times = null)
 {
-    return factory($class)->make($attributes);
+    return factory($class, $times)->make($attributes);
 }
