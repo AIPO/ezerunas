@@ -13,8 +13,7 @@
                 </div>
             </div>
             <hr> @foreach ($replies as $reply)
-    @include('threads.reply')
-            <br> @endforeach {{$replies->links()}} @if(auth()->check())
+    @include('threads.reply') @endforeach {{$replies->links()}} @if(auth()->check())
             <form method="POST" action="{{$thread->path().'/replies'}}">
                 @csrf
                 <div class="form-group">
@@ -23,10 +22,10 @@
                 </div>
                 <button type="submit" class="btn">Post</button>
             </form>
-        </div>
-        @else
+            @else
         <p class="text-center">Please <a href="{{route('login')}}">sign in</a> to reply to a post</p>
         @endif
+        </div>
 
         <div class="col-md-4">
             <div class="card">
