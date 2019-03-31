@@ -64,4 +64,13 @@ class CreateThreadsTest extends TestCase
 
         return $this->post('/threads', $thread->toArray());
     }
+    /** @test */
+    public function testThreadCanBeDeleted()
+    {
+        $this->signIn();
+        $thread= create(Thread::class);
+        $this->json('DELETE', $thred->path());
+        $this->assertDatabaseMissing('');
+    }
+
 }

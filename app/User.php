@@ -27,4 +27,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    //get rote key name for laravel
+    public function getRouteKeyName(Type $var = null)
+    {
+        return 'name';
+    }
+    public function threads(){
+        return $this->hasMany(Thread::class)->latest();
+    }
 }
