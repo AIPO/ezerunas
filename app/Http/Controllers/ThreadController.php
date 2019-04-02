@@ -67,18 +67,17 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param $channelId
+     * @param $channel
      * @param  \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show($channel, Thread $thread)
     {
 
         return view('threads.show', [
             'thread' => $thread,
             'replies' => $thread->replies()->paginate(20),
-        ]
-        );
+        ]);
     }
 
     /**
@@ -110,9 +109,10 @@ class ThreadController extends Controller
      * @param  \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy(Channel $channel, Thread $thread)
     {
-        //
+        $thread->delete();
+        return response([], 204);
     }
 
 /** */
