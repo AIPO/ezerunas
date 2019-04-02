@@ -33,7 +33,7 @@
                     This thread published {{ $thread->created_at->diffForHumans()}}
                 </div>
                 <div class="card-body">
-                    Created by <a href="#"> {{$thread->creator->name}}</a> and has <strong>{{$thread->replies_count}}</strong>                    comments.
+                    Created by <a href="/profiles/{{$thread->creator->name}}"> {{$thread->creator->name}}</a> and has <strong>{{$thread->replies_count}}</strong>                    comments.
 
                 </div>
             </div>
