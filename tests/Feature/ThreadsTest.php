@@ -15,7 +15,7 @@ class ThreadsTest extends TestCase
 
     protected $thread;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->thread = create(Thread::class);
@@ -44,6 +44,7 @@ class ThreadsTest extends TestCase
         $this->get($this->thread->path())
             ->assertSee($reply->body);
     }
+
     public function test_user_can_filter_threads_according_to_channel()
     {
         $channel = create(Channel::class);
@@ -53,6 +54,7 @@ class ThreadsTest extends TestCase
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel);
     }
+
     public function test_user_can_filter_threads_by_any_username()
     {
         $this->signIn(create(User::class, ['name' => 'JohnDoe']));
@@ -62,6 +64,7 @@ class ThreadsTest extends TestCase
             ->assertSee($threadByJohn->title)
             ->assertDontSee($threadbyNotJohn->title);
     }
+
     public function testUserCanFilterThreadByPopularity()
     {
 //Given 3 replies
