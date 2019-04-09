@@ -4,6 +4,7 @@ namespace Tests\Feature;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use App\Thread;
 
 class ProfilesTest extends TestCase
 {

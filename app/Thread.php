@@ -12,13 +12,24 @@ class Thread extends Model
 {
     protected $guarded = [];
     protected $fillable = ['title', 'channel_id', 'user_id', 'body'];
-    protected $with = ['creator','channel'];
+    protected $with = ['creator', 'channel'];
 
     protected static function boot()
     {
         parent::boot();
         static::addGlobalScope('replyCount', function ($builder) {
             $builder->withCount('replies');
+        });
+        static::deleting(function ($thread) {
+            $thread->replies()->delete();
+        });
+        static::created(function ($thread) {
+            Activity::create([
+                    'user_id' => auth()->id(),
+                    'type' => 'created_thread',
+
+                ]
+            );
         });
     }
 
@@ -40,6 +51,7 @@ class Thread extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
     public function channel()
     {
         return $this->belongsTo(Channel::class);
@@ -52,10 +64,12 @@ class Thread extends Model
     {
         $this->replies()->create($reply);
     }
+
     public function scopeFilter($query, ThreadFilters $filters)
     {
         return $filters->apply($query);
     }
+
     public function getReplyCount()
     {
         $this->replies()->count();

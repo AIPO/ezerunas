@@ -7,12 +7,12 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    @foreach($threads as $thread)
+                    @forelse($threads as $thread)
                     <div class="card">
                         <div class="card-body">
                             <div class="level">
                                 <h4 class="card-title flex">
-                                    <a href="{{$thread->path()}}">{{$thread->title}}</a>
+                                    {{$thread->id}} <a href="{{$thread->path()}}">{{$thread->title}}</a>
                                 </h4>
                                 <a href="{{$thread->path()}}">
                                     <strong>{{$thread->replies_count}} {{str_plural('reply',$thread->replies_count)}}</strong>
@@ -21,7 +21,9 @@
                             <div class="card-text">{!!$thread->body!!}</div>
                         </div>
                     </div>
-                    @endforeach
+                    @empty
+                    <p> No threads in this channel.</p>
+                    @endforelse
                 </div>
             </div>
         </div>
