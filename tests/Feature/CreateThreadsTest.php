@@ -12,11 +12,7 @@ class CreateThreadsTest extends TestCase
 {
     use DatabaseMigrations;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
     public function testAuthenticatedUserCanCreateNewForumThreads()
     {
         //Create user
@@ -29,8 +25,6 @@ class CreateThreadsTest extends TestCase
             ->assertSee($thread->body);
     }
 
-    /**
-     */
     public function testGuestsMayNotCreateThreads()
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');

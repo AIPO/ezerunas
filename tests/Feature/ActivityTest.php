@@ -12,10 +12,14 @@ class ActivityTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /**
+     *
+     */
     public function testIfActivityIsRecordedWhenThreadIsCreated()
     {
         $this->signIn();
-        $thread = create(Thread::class);
+
+        $thread = create('App\Thread');
         $this->assertDatabaseHas('activities', [
             'type' => 'created_thread',
             'user_id' => auth()->id(),

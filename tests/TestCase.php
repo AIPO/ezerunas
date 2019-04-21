@@ -14,12 +14,16 @@ abstract class TestCase extends BaseTestCase
     protected function setUp():void
     {
         parent::setUp();
-        //$this->disableExceptionHandling();
+      //  $this->disableExceptionHandling();
     }
 
     protected function signIn($user = null)
     {
-        $user = $user ?: create(User::class);
+        if ($user) {
+            $user = $user;
+        } else {
+            $user = create(User::class);
+        }
         $this->actingAs($user);
         return $this;
     }

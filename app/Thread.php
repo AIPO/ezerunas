@@ -4,6 +4,7 @@ namespace App;
 
 use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
 
 /**
  * @method static create(array $array)
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Thread extends Model
 {
     protected $guarded = [];
-    protected $fillable = ['title', 'channel_id', 'user_id', 'body'];
+ //   protected $fillable = ['title', 'channel_id', 'user_id', 'body'];
     protected $with = ['creator', 'channel'];
 
     protected static function boot()
@@ -25,9 +26,10 @@ class Thread extends Model
         });
         static::created(function ($thread) {
             Activity::create([
-                    'user_id' => auth()->id(),
-                    'type' => 'created_thread',
-
+                    'user_id' => 1,
+                    'type' => 'created_'. strtolower((new ReflectionClass($thread))->getShortName()),
+                    'subject_id' => $thread->id,
+                    'subject_type' => get_class($thread),
                 ]
             );
         });
