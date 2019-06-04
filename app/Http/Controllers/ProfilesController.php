@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class ProfilesController extends Controller
 {
@@ -30,7 +31,7 @@ class ProfilesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,14 +42,16 @@ class ProfilesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
+        $activities = $this->getActivity($user);
         return view('profiles.show', [
             'profileUser' => $user,
-            'threads'=> $user->threads()->paginate(2),
+            'threads' => $user->threads()->paginate(2),
+            'activities' => $activities,
 
         ]);
     }
@@ -56,7 +59,7 @@ class ProfilesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -67,8 +70,8 @@ class ProfilesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -79,11 +82,23 @@ class ProfilesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * @param User $user
+     * @return Collection|\Illuminate\Support\Collection
+     */
+    public function getActivity(User $user)
+    {
+        $activities = $user->activity()->with('subject')->take(20)->latest()->get()->groupBy(function ($activity) {
+            return $activity->created_at->format('Y-m-d');
+        });
+        return $activities;
     }
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Filters\ThreadFilters;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
 
@@ -11,8 +12,9 @@ use ReflectionClass;
  */
 class Thread extends Model
 {
+    use RecordsActivity;
     protected $guarded = [];
- //   protected $fillable = ['title', 'channel_id', 'user_id', 'body'];
+    //   protected $fillable = ['title', 'channel_id', 'user_id', 'body'];
     protected $with = ['creator', 'channel'];
 
     protected static function boot()
@@ -23,15 +25,6 @@ class Thread extends Model
         });
         static::deleting(function ($thread) {
             $thread->replies()->delete();
-        });
-        static::created(function ($thread) {
-            Activity::create([
-                    'user_id' => 1,
-                    'type' => 'created_'. strtolower((new ReflectionClass($thread))->getShortName()),
-                    'subject_id' => $thread->id,
-                    'subject_type' => get_class($thread),
-                ]
-            );
         });
     }
 
