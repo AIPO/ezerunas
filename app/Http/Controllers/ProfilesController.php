@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use App\Activity;
 
 class ProfilesController extends Controller
 {
@@ -47,11 +48,11 @@ class ProfilesController extends Controller
      */
     public function show(User $user)
     {
-        $activities = $this->getActivity($user);
         return view('profiles.show', [
             'profileUser' => $user,
-            'threads' => $user->threads()->paginate(2),
-            'activities' => $activities,
+            'activities' => Activity::feed($user),
+            //'threads' => $user->threads()->paginate(2),
+            //'activities' => $this->getActivity($user),
 
         ]);
     }
@@ -88,17 +89,5 @@ class ProfilesController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * @param User $user
-     * @return Collection|\Illuminate\Support\Collection
-     */
-    public function getActivity(User $user)
-    {
-        $activities = $user->activity()->with('subject')->take(20)->latest()->get()->groupBy(function ($activity) {
-            return $activity->created_at->format('Y-m-d');
-        });
-        return $activities;
     }
 }

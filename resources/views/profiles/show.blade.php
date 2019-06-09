@@ -9,7 +9,7 @@
         <div>
             <ul class="list-group">
                 @foreach($activities as $date =>$activity)
-                    <h3 class="page-header">{{$date}}</h3>
+                    <h3 class="page-header">{{dd($date)}}</h3>
                     @foreach($activity as $record)
                         @include("profiles.activities.{$record->type}",['activity'=> $record])
                         {{--                    <li class="list-group-item list-group-item-primary">A simple primary list group item</li>--}}
