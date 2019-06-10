@@ -24,7 +24,7 @@ class ActivityTest extends TestCase
             'type' => 'created_thread',
             'user_id' => auth()->id(),
             'subject_id' => $thread->id,
-            'subject_type' => 'App\Thread',
+            'subject_type' => 'App\\Thread',
         ]);
         $activity = Activity::first();
         $this->assertEquals($activity->subject->id, $thread->id);
@@ -48,15 +48,15 @@ class ActivityTest extends TestCase
         ]);
         //When we fetch users feed
         auth()->user()->activity()->first()->update([
-            'created_at' =>Carbon::now()->subWeek()
+            'created_at' => Carbon::now()->subWeek(),
         ]);
         $feed = Activity::feed(auth()->user());
         //then we get info properly formatted.
         $this->assertTrue($feed->keys()->contains(
-            Carbon::now()->format('Y-m-d')->diffForHumans()
+            Carbon::now()->format('Y-m-d')
         ));
         $this->assertTrue($feed->keys()->contains(
-            Carbon::now()->subWeek()->format('Y-m-d')->diffForHumans()
+            Carbon::now()->subWeek()->format('Y-m-d')
         ));
     }
 }

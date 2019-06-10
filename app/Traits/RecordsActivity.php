@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Traits;
-
 
 use ReflectionClass;
 use ReflectionException;
@@ -12,11 +10,20 @@ trait RecordsActivity
 
     protected static function bootRecordsActivity()
     {
-        if(auth()->guest())return;
+        if (auth()->guest()) {
+            return;
+        }
 
-        static::created(function ($thread) {
-            $thread->recordActivity('created');
-        });
+        foreach (static::getActivitiesToRecord() as $event) {
+            static::$event(function ($model) use ($event) {
+                $model->recordActivity($event);
+            });
+        }
+        static::deleting(
+            function ($model) {
+                $model->activity()->delete();
+            }
+        );
     }
 
     /**
@@ -35,7 +42,8 @@ trait RecordsActivity
     {
         $this->activity()->create([
             'user_id' => auth()->id(),
-            'type' => $this->getActivityType($event)]);
+            'type' => $this->getActivityType($event),
+        ]);
     }
 
     /**
@@ -47,6 +55,9 @@ trait RecordsActivity
     {
         $type = strtolower((new ReflectionClass($this))->getShortName());
         return "{$event}_{$type}";
-
+    }
+    protected static function getActivitiesToRecord()
+    {
+        return ['created'];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Activity;
 use App\Channel;
 use App\Reply;
 use App\Thread;
@@ -11,7 +12,6 @@ use Tests\TestCase;
 class CreateThreadsTest extends TestCase
 {
     use DatabaseMigrations;
-
 
     public function testAuthenticatedUserCanCreateNewForumThreads()
     {
@@ -61,12 +61,28 @@ class CreateThreadsTest extends TestCase
     public function testAuthorizedUsersThreadCanBeDeletedWithReplies()
     {
         $this->signIn();
+
         $thread = create(Thread::class, ['user_id' => auth()->id()]);
         $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
         $response = $this->json('DELETE', $thread->path());
+
         $response->assertStatus(204);
+
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+
+        // $this->assertDatabaseMissing('activities', [
+        //     'subject_id' => $thread->id,
+        //     'subject_type' =>get_class($thread)
+        // ]);
+        // $this->assertDatabaseMissing('activities', [
+        //     'subject_id' => $reply->id,
+        //     'subject_type' =>get_class($reply)
+        // ]);
+      //  dd(Activity::count());
+        $this->assertEquals(0, Activity::count());
+
     }
     /** @test */
     public function testUnauthorizedUsersCanNotDeleteThreads()
