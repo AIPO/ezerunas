@@ -1697,6 +1697,8 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var timers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! timers */ "./node_modules/timers-browserify/main.js");
+/* harmony import */ var timers__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(timers__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1707,11 +1709,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["message"],
   data: function data() {
     return {
-      message: "Temp message"
+      body: "",
+      show: false
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    if (this.message) {
+      this.flash();
+    }
+
+    window.events.$on("flash", function (message) {
+      _this.flash(message);
+    });
+  },
+  methods: {
+    flash: function flash(message) {
+      this.body = message;
+      this.show = true;
+      this.hide();
+    },
+    hide: function hide() {
+      var _this2 = this;
+
+      Object(timers__WEBPACK_IMPORTED_MODULE_0__["setTimeout"])(function () {
+        _this2.show = false;
+      }, 3000);
+    }
   },
   mounted: function mounted() {
     console.log("Component mounted.");
@@ -45435,12 +45465,15 @@ var render = function() {
   return _c(
     "div",
     {
+      directives: [
+        { name: "show", rawName: "v-show", value: _vm.show, expression: "show" }
+      ],
       staticClass: "alert alert-warning alert-flash",
       attrs: { role: "alert" }
     },
     [
       _c("strong", [_vm._v("Success")]),
-      _vm._v("\n  " + _vm._s(_vm.message) + "\n  "),
+      _vm._v("\n  " + _vm._s(_vm.body) + "\n  "),
       _vm._m(0)
     ]
   )
@@ -57720,6 +57753,13 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+
+window.events = new Vue();
+
+window.flash = function (message) {
+  window.events.$emit('flash', message);
+};
 
 /***/ }),
 

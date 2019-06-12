@@ -1,7 +1,7 @@
 <template>
-  <div class="alert alert-warning alert-flash" role="alert">
+  <div class="alert alert-warning alert-flash" role="alert" v-show="show">
     <strong>Success</strong>
-    {{message}}
+    {{body}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -9,11 +9,34 @@
 </template>
 
 <script>
+import { setTimeout } from "timers";
 export default {
+  props: ["message"],
   data() {
     return {
-      message: "Temp message"
+      body: "",
+      show: false
     };
+  },
+  created() {
+    if (this.message) {
+      this.flash();
+    }
+    window.events.$on("flash", message => {
+      this.flash(message);
+    });
+  },
+  methods: {
+    flash(message) {
+      this.body = message;
+      this.show = true;
+      this.hide();
+    },
+    hide() {
+      setTimeout(() => {
+        this.show = false;
+      }, 3000);
+    }
   },
   mounted() {
     console.log("Component mounted.");
