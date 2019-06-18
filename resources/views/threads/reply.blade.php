@@ -21,6 +21,7 @@
     </div>
     @can('update', $reply)
     <div class="card-footer">
+        <button type="submit" class="btn btn-sm">Edit</button>
         <form method="POST" action="/replies/{{$reply->id}}">
             @csrf
             @method('DELETE')
