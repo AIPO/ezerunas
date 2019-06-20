@@ -8,6 +8,10 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.events = new Vue();
+window.flash = function (message) {
+    window.events.$emit('flash', message);
+};
 
 /**
  * The following block of code may be used to automatically register your
