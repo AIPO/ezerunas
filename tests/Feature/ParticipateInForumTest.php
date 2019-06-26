@@ -10,6 +10,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\RedirectResponse;
 
 class ParticipateInForumTest extends TestCase
 {
@@ -58,11 +59,18 @@ class ParticipateInForumTest extends TestCase
             ->delete("/replies/{$reply->id}")
             ->assertStatus(403);
     }
-    public function authorized_users_can_delete_replies()
+    public function test_authorized_users_can_delete_replies()
     {
         $this->signIn();
         $reply = create(Reply::class, ['user_id' => auth()->id()]);
         $this->delete("/replies/{$reply->id}")->assertStatus(302)
             ->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+    public function test_authorized_users_can_update_replies()
+    {
+        $this->signIn();
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+        $this->patch("/replies/{$reply->id}", ['body'=> 'body is updated']);
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body'=> 'body is updated']);
     }
 }
