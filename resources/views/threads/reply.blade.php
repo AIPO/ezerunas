@@ -34,13 +34,14 @@
         @can('update', $reply)
         <div class="card-footer">
             <div class="form-group level">
-                <button type="submit" class="btn btn-sm btn-outline-primary mr-1" @click="editing=true">Edit</button>
-                <form method="POST" action="/replies/{{$reply->id}}">
+                <button class="btn btn-sm btn-outline-primary mr-1" @click="editing=true">Edit</button>
+                  <button  class="btn btn-sm btn-outline-danger mr-1" @click="destroy">Delete</button>
+                {{-- <form method="POST" action="/replies/{{$reply->id}}">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
             </div>
-            </form>
+            </form> --}}
         </div>
         @endcan
     </div>

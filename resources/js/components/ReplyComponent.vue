@@ -15,6 +15,9 @@ export default {
                 this.editing = false;
                 flash('Updated!');
         },
+        destroy(){
+          
+        }
     },
 }
 </script>
