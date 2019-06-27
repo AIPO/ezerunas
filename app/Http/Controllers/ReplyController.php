@@ -85,7 +85,9 @@ class ReplyController extends Controller
      */
     public function update(Request $request, Reply $reply)
     {
-        //
+    //  dd($request);
+        $reply->update(['body' =>request('body')]);
+
     }
 
     /**

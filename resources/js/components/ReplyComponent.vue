@@ -12,6 +12,8 @@ export default {
             axios.patch('/replies/' + this.attributes.id,{
                 body : this.body
                 });
+                this.editing = false;
+                flash('Updated!');
         },
     },
 }
