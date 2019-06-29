@@ -16,7 +16,9 @@ export default {
                 flash('Updated!');
         },
         destroy(){
-          
+          axios.delete('/replies/' + this.attributes.id);
+              this.editing = false;
+              flash('Reply deleted!');
         }
     },
 }

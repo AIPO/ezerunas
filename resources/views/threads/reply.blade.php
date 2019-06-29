@@ -7,13 +7,13 @@
                     {{$reply->created_at->diffForHumans()}}
                 </h5>
                 <div>
-
-                    <form method="POST" action="/replies/{{$reply->id}}/favorites">
-                        @csrf
-                        <button class="btn btn-default" {{$reply->isFavorited()?'disabled':''}}>
-                            {{$reply->favorites_count}}
-                        </button>
-                    </form>
+                    <favorite :reply="{{$reply}}"></favorite>
+                    {{-- <form method="POST" action="/replies/{{$reply->id}}/favorites">
+                    @csrf
+                    <button class="btn btn-default" {{$reply->isFavorited()?'disabled':''}}>
+                        {{$reply->favorites_count}}
+                    </button>
+                    </form> --}}
                 </div>
             </div>
         </div>
@@ -35,14 +35,15 @@
         <div class="card-footer">
             <div class="form-group level">
                 <button class="btn btn-sm btn-outline-primary mr-1" @click="editing=true">Edit</button>
-                  <button  class="btn btn-sm btn-outline-danger mr-1" @click="destroy">Delete</button>
+                <button class="btn btn-sm btn-outline-danger mr-1" @click="destroy">Delete</button>
                 {{-- <form method="POST" action="/replies/{{$reply->id}}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
             </div>
             </form> --}}
         </div>
         @endcan
+    </div>
     </div>
 </reply>
