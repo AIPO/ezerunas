@@ -1,24 +1,28 @@
-<<script>
+<script>
+import Favorite from './FavoriteComponent.vue';
 export default {
     props: ['attributes'],
-    data(){
-        return{
+    data() {
+        return {
             editing: false,
             body: this.attributes.body
         };
     },
+    components: {
+        Favorite
+    },
     methods: {
-        update(){
-            axios.patch('/replies/' + this.attributes.id,{
-                body : this.body
-                });
-                this.editing = false;
-                flash('Updated!');
+        update() {
+            axios.patch('/replies/' + this.attributes.id, {
+                body: this.body
+            });
+            this.editing = false;
+            flash('Updated!');
         },
-        destroy(){
-          axios.delete('/replies/' + this.attributes.id);
-              this.editing = false;
-              flash('Reply deleted!');
+        destroy() {
+            axios.delete('/replies/' + this.attributes.id);
+            this.editing = false;
+            flash('Reply deleted!');
         }
     },
 }
