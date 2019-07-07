@@ -1,6 +1,6 @@
 <template>
 <button class="btn btn-default" @click="toggle">
-    <span class="glyphicon glyphicon-heart"></span>
+    <span class="fas fa-heart"></span>
     <span v-text="favoritesCount"> </span>
 </button>
 </template>

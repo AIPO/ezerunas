@@ -45541,7 +45541,7 @@ var render = function() {
     "button",
     { staticClass: "btn btn-default", on: { click: _vm.toggle } },
     [
-      _c("span", { staticClass: "glyphicon glyphicon-heart" }),
+      _c("span", { staticClass: "fas fa-heart" }),
       _vm._v(" "),
       _c("span", { domProps: { textContent: _vm._s(_vm.favoritesCount) } })
     ]
