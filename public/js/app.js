@@ -1707,16 +1707,35 @@ __webpack_require__.r(__webpack_exports__);
   props: ['reply'],
   data: function data() {
     return {
-      favoritesCount: 1
+      favoritesCount: this.reply.favoritesCount,
+      isFavorited: this.reply.isFavorited
     };
+  },
+  computed: {
+    classes: function classes() {
+      return ['btn', this.isFavorited ? 'btn-primary' : 'btn-default'];
+    },
+    endpoint: function endpoint() {
+      return '/replies/' + this.reply.id + '/favorites';
+    }
   },
   methods: {
     toggle: function toggle() {
       if (this.isFavorited) {
-        axios["delete"]('replies/' + this.reply.id + '/favorites');
+        this.destroy();
       } else {
-        axios.create('replies/' + this.reply.id + '/favorites');
+        this.create();
       }
+    },
+    create: function create() {
+      axios.post(this.endpoint);
+      this.isFavorited = true;
+      this.favoritesCount++;
+    },
+    destroy: function destroy() {
+      axios["delete"](this.endpoint);
+      this.isFavorited = false;
+      this.favoritesCount--;
     }
   }
 });
@@ -45539,7 +45558,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "button",
-    { staticClass: "btn btn-default", on: { click: _vm.toggle } },
+    {
+      class: _vm.classes,
+      attrs: { type: "submit" },
+      on: { click: _vm.toggle }
+    },
     [
       _c("span", { staticClass: "fas fa-heart" }),
       _vm._v(" "),

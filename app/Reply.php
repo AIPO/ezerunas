@@ -10,7 +10,7 @@ class Reply extends Model
     use Favoritable, RecordsActivity;
     protected $guarded = [];
     protected $with = ['owner', 'favorites'];
-    protected $appends =['favoritesCount'];
+    protected $appends =['favoritesCount','isFavorited'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

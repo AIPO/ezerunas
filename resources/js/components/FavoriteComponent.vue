@@ -1,5 +1,5 @@
 <template>
-<button class="btn btn-default" @click="toggle">
+<button type="submit" :class="classes" @click="toggle">
     <span class="fas fa-heart"></span>
     <span v-text="favoritesCount"> </span>
 </button>
@@ -9,18 +9,38 @@ export default {
     props: ['reply'],
     data() {
         return {
-            favoritesCount: 1,
+            favoritesCount: this.reply.favoritesCount,
+            isFavorited: this.reply.isFavorited,
 
+        }
+    },
+    computed: {
+        classes() {
+            return ['btn', this.isFavorited ? 'btn-primary' : 'btn-default'];
+        },
+        endpoint() {
+            return '/replies/' + this.reply.id + '/favorites';
         }
     },
     methods: {
         toggle() {
             if (this.isFavorited) {
-                axios.delete('replies/'+this.reply.id+'/favorites');
-            }else{
-                axios.create('replies/'+this.reply.id+'/favorites');
+                this.destroy();
+            } else {
+                this.create();
             }
+        },
+        create() {
+            axios.post(this.endpoint);
+            this.isFavorited = true;
+            this.favoritesCount++;
+        },
+        destroy() {
+            axios.delete(this.endpoint);
+            this.isFavorited = false;
+            this.favoritesCount--;
         }
+
     }
 }
 </script>
