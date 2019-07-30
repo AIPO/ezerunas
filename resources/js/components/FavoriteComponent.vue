@@ -11,7 +11,6 @@ export default {
         return {
             favoritesCount: this.reply.favoritesCount,
             isFavorited: this.reply.isFavorited,
-
         }
     },
     computed: {
@@ -40,7 +39,6 @@ export default {
             this.isFavorited = false;
             this.favoritesCount--;
         }
-
     }
 }
 </script>

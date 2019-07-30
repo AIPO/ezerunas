@@ -22,8 +22,8 @@ window.flash = function (message) {
  */
 
 Vue.component('flash', require('./components/FlashComponent.vue').default);
-Vue.component('reply', require('./components/ReplyComponent.vue').default);
-
+//Vue.component('reply', require('./components/ReplyComponent.vue').default);
+Vue.component('thread-view', require('./pages/Thread.vue').default);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
