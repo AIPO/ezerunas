@@ -22,8 +22,6 @@
                         @endcan
                     </div>
                 </div>
-
-
                 <div class="card-body">
                     {{$thread->body}}
                 </div>
@@ -33,18 +31,7 @@
             {{-- @foreach ($replies as $reply)
             @include('threads.reply')
             @endforeach {{$replies->links()}} --}}
-            @if(auth()->check())
-                <form method="POST" action="{{$thread->path().'/replies'}}">
-                    @csrf
-                    <div class="form-group">
-                        <label for="body">Reply</label>
-                        <textarea name="body" id="body" cols="30" rows="10" class="form-control" placeholder="Have something to say?"></textarea>
-                    </div>
-                    <button type="submit" class="btn">Post</button>
-                </form>
-                @else
-                <p class="text-center">Please <a href="{{route('login')}}">sign in</a> to reply to a post</p>
-                @endif
+          
         </div>
 
         <div class="col-md-4">
@@ -60,5 +47,6 @@
         </div>
     </div>
     </div>
-    @endsection
+  </div>
     <thread-view>
+        @endsection

@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -8,8 +7,15 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+//additional admin setup
+Vue.prototype.authorize = function(handler) {
+    let user = window.App.user;
+    // if (!user) return false;
+    //   return handler(user);
+    return user ? handler(user) : false;
+};
 window.events = new Vue();
-window.flash = function (message) {
+window.flash = function(message) {
     window.events.$emit('flash', message);
 };
 
@@ -38,9 +44,7 @@ const app = new Vue({
 });
 
 $(document).ready(function() {
-    $('#editor').summernote(
-        {
-            height:200,
-        }
-    );
+    $('#editor').summernote({
+        height: 200,
+    });
 });

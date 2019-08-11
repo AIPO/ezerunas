@@ -6,11 +6,10 @@
                 <a :href="'/profiles/'+data.owner.name" class="flex" v-text="data.owner.name"></a> said
                 {{data.created_at}}
             </h5>
-            <!-- @if (Auth::check())
-            <div>
-                <favorite :reply="{{$reply}}"></favorite>
+
+            <div v-if="signedIn">
+                <favorite :reply="data"></favorite>
             </div>
-            @endif -->
         </div>
     </div>
     <div class="card-body">
@@ -27,7 +26,7 @@
         </div>
 
     </div>
-    <div class="card-footer">
+    <div class="card-footer" v-if="canUpdate">
         <div class="form-group level">
             <button class="btn btn-sm btn-outline-primary mr-1" @click="editing=true">Edit</button>
             <button class="btn btn-sm btn-outline-danger mr-1" @click="destroy">Delete</button>
@@ -49,6 +48,15 @@ export default {
             editing: false,
             body: this.data.body
         };
+    },
+    computed: {
+        signedIn() {
+            return window.App.signedIn;
+        },
+        canUpdate() {
+            return this.authorize(user => this.data.user_id == user.id);
+            //return this.data.user_id = window.App.user.id;
+        }
     },
 
     methods: {
