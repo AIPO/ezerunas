@@ -3,15 +3,18 @@
 namespace App;
 
 use App\Filters\ThreadFilters;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
 
 /**
  * @method static create(array $array)
  */
 class Thread extends Model
 {
+    use RecordsActivity;
     protected $guarded = [];
-    protected $fillable = ['title', 'channel_id', 'user_id', 'body'];
+    //   protected $fillable = ['title', 'channel_id', 'user_id', 'body'];
     protected $with = ['creator', 'channel'];
 
     protected static function boot()
@@ -21,15 +24,7 @@ class Thread extends Model
             $builder->withCount('replies');
         });
         static::deleting(function ($thread) {
-            $thread->replies()->delete();
-        });
-        static::created(function ($thread) {
-            Activity::create([
-                    'user_id' => auth()->id(),
-                    'type' => 'created_thread',
-
-                ]
-            );
+            $thread->replies->each->delete();
         });
     }
 

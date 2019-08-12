@@ -85,7 +85,9 @@ class ReplyController extends Controller
      */
     public function update(Request $request, Reply $reply)
     {
-        //
+    //  dd($request);
+        $reply->update(['body' =>request('body')]);
+
     }
 
     /**
@@ -96,6 +98,12 @@ class ReplyController extends Controller
      */
     public function destroy(Reply $reply)
     {
-        //
+        $this->authorize('update', $reply);
+        $reply->delete();
+        if(request()->expectsJson()){
+          return response(['status' => 'Reply deleted!']);
+        }
+        session()->flash('message', 'Reply was deleted!');
+        return back();
     }
 }

@@ -16,12 +16,22 @@ class Favoritestest extends TestCase
     }
     public function testAuthenticatedUserCanFavoriteAnyReply()
     {
-//Add post to favorite
+        //Add post to favorite
         $this->signIn();
         //post by url /replies/id/favorites
         $reply = create(Reply::class);
         $this->post('replies/' . $reply->id . '/favorites');
         $this->assertCount(1, $reply->favorites);
+    }
+    public function testAuthenticatedUserCanUnFavoriteaReply()
+    {
+        //Add post to favorite
+        $this->signIn();
+        //post by url /replies/id/favorites
+        $reply = create(Reply::class);
+        $reply->favorite();
+        $this->delete('replies/' . $reply->id . '/favorites');
+        $this->assertCount(0, $reply->fresh()->favorites);
     }
     public function testAuthenticatedUserMayOnlyFavoriteReplyOnce()
     {
