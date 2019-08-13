@@ -3,15 +3,17 @@
     <div v-for="(reply,index) in items">
         <reply :data="reply" @deleted="remove(index)"></reply>
     </div>
+    <new-reply @created="add"></new-reply>
 </div>
 </template>
 
 <script>
 import Reply from './ReplyComponent.vue';
+import NewReply from './NewReplyComponent.vue'
 export default {
-    name: 'replies',
     components: {
-        Reply
+        Reply,
+        NewReply
     },
     props: ['data'],
     data() {
@@ -20,6 +22,9 @@ export default {
         }
     },
     methods: {
+        add(reply) {
+            this.items.push(reply);
+        },
         remove(index) {
             this.items.splice(index, 1);
             this.$emit('removed');

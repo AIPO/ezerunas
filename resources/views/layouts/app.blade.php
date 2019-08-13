@@ -14,19 +14,17 @@
     <script>
         window.App = {!!
             json_encode([
-               'csrf-token' => csrf_token(),
+                'csrf-token' => csrf_token(),
                 'signedIn' => Auth::check(),
-                'user' =>Auth::user();
-
-            ])
-        !!}
+                'user' => Auth::user(),
+            ]) !!}
     </script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 
 <body style="padding-bottom: 100px;">
