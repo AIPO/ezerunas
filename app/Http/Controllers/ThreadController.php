@@ -61,7 +61,8 @@ class ThreadController extends Controller
             'title' => request('title'),
             'body' => request('body'),
         ]);
-        return redirect($thread->path());
+        return redirect($thread->path())
+        ->with('flash', 'Thread created!');
     }
 
     /**
@@ -112,15 +113,15 @@ class ThreadController extends Controller
     public function destroy(Channel $channel, Thread $thread)
     {
         $this->authorize('update',$thread);
-        
-        if ($thread->user_id != auth()->id()) {
-            if (request()->wantsJson()) {
-                return response(['status' => 'Permission denied.'], 403);
-            }
-            return('/login');
-        }
 
-        $thread->replies()->delete();
+      //  if ($thread->user_id != auth()->id()) {
+        //     if (request()->wantsJson()) {
+        //         return response(['status' => 'Permission denied.'], 403);
+        //     }
+        //     return('/login');
+        // }
+
+      //  $thread->replies()->delete();
         $thread->delete();
         if (request()->wantsJson()) {
             return response([], 204);

@@ -36,10 +36,8 @@ class ReplyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param $channelId
      * @param Thread $thread
-     * @return Reply|\Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return void
      */
     public function store($channelId, Thread $thread)
     {
@@ -47,16 +45,15 @@ class ReplyController extends Controller
             request(),
             ['body' => 'required']
         );
-        $reply =$thread->addReply(
+        $reply=$thread->addReply(
             [
                 'body' => \request('body'),
                 'user_id' => auth()->id()
             ]
         );
-        if (request()->expectsJson()) {
-            return $reply->load('owner');
+        if(request()->expectsJson()){
+          return $reply;//->load('owner');
         }
-
         return back();
     }
 
@@ -91,7 +88,9 @@ class ReplyController extends Controller
      */
     public function update(Request $request, Reply $reply)
     {
-        //
+    //  dd($request);
+        $reply->update(['body' =>request('body')]);
+
     }
 
     /**
@@ -102,6 +101,12 @@ class ReplyController extends Controller
      */
     public function destroy(Reply $reply)
     {
-        //
+        $this->authorize('update', $reply);
+        $reply->delete();
+        if(request()->expectsJson()){
+          return response(['status' => 'Reply deleted!']);
+        }
+        session()->flash('message', 'Reply was deleted!');
+        return back();
     }
 }

@@ -3,8 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\RecordsActivity;
 
 class Favorite extends Model
 {
-    protected $guarded=[];
+    use RecordsActivity;
+    protected $guarded = [];
+    public function favorited()
+    {
+        return $this->morphTo();
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
+use App\Activity;
 
 class ProfilesController extends Controller
 {
@@ -41,14 +43,16 @@ class ProfilesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
         return view('profiles.show', [
             'profileUser' => $user,
-            'threads' => $user->threads()->paginate(2),
+            'activities' => Activity::feed($user),
+            //'threads' => $user->threads()->paginate(2),
+            //'activities' => $this->getActivity($user),
 
         ]);
     }
