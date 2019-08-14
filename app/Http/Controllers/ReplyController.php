@@ -36,8 +36,10 @@ class ReplyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param $channelId
      * @param Thread $thread
-     * @return void
+     * @return Reply|\Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store($channelId, Thread $thread)
     {
