@@ -1,10 +1,10 @@
 <?php
 namespace Tests\Feature;
 
+use App\Thread;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use App\Thread;
 
 class ProfilesTest extends TestCase
 {
@@ -16,9 +16,11 @@ class ProfilesTest extends TestCase
     }
     public function testProfilesDisplayAllthreadsCreatedByUser()
     {
-        $user = create(User::class);
-        $thread = create(Thread::class, ['user_id' => $user->id]);
-        $this->get("/profiles/{$user->name}")->assertSee($thread->title)
+        $this->signIn();
+
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $this->get("/profiles/" . auth()->user()->name)
+            ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
 }

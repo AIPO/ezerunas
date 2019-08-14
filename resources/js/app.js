@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -8,6 +7,17 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+//additional admin setup
+Vue.prototype.authorize = function(handler) {
+    let user = window.App.user;
+    // if (!user) return false;
+    //   return handler(user);
+    return user ? handler(user) : false;
+};
+window.events = new Vue();
+window.flash = function(message) {
+    window.events.$emit('flash', message);
+};
 
 /**
  * The following block of code may be used to automatically register your
@@ -17,8 +27,9 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
+Vue.component('flash', require('./components/FlashComponent.vue').default);
+//Vue.component('reply', require('./components/ReplyComponent.vue').default);
+Vue.component('thread-view', require('./pages/Thread.vue').default);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
@@ -33,9 +44,7 @@ const app = new Vue({
 });
 
 $(document).ready(function() {
-    $('#editor').summernote(
-        {
-            height:200,
-        }
-    );
+    $('#editor').summernote({
+        height: 200,
+    });
 });
