@@ -11,12 +11,21 @@
 - install vagrant, virtualbox. 
 - `composer install`.
 - to start server run `php vendor/bin/homestead make`.
+- copy `.env.example` to `.env`.
+- change `.env` to `Homestead.yaml` settings
 - `php artisan key:generate`
+- `php artisan cache:clear`
+- `php artisan config:clear`
+- `composer dump-autoload`
+prisijungti i vagrant `vagrant ssh` ir  `cd code`
 - `php artisan migrate`
-- change .env to Homestead.yaml settings
+- `php artisan seed`
+install nodejs, npm.
+- run `npm install`
+
 
 ##Testing 
-- run "test" in console it is alias for "vendon/bin/phpunit"
+- run "test" in console it is alias for "vendor/bin/phpunit"
 
 ## Contributing
 
