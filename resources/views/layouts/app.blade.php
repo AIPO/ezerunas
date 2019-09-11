@@ -17,7 +17,7 @@
                 'csrf-token' => csrf_token(),
                 'signedIn' => Auth::check(),
                 'user' => Auth::user(),
-            ]) !!}
+            ]) !!};
     </script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -31,10 +31,9 @@
 <div id="app">
     @include('layouts.nav')
     @yield('content')
-    <flash message="{{session('flash')}}"></flash>
+    <flash message="{{ session('flash') }}"></flash>
 </div>
-<!-- Scripts -->
-<script src="{{ mix('js/app.js') }}" defer></script>
+<script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>

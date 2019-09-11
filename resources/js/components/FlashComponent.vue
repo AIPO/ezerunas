@@ -1,8 +1,6 @@
 <template>
     <div class="alert  alert-flash" :class="'alert-'+level" role="alert" v-show="show" v-text="body">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+
     </div>
 </template>
 

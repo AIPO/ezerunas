@@ -9,8 +9,8 @@
                         <span class="flex">
                             <div class="card-header">{{$thread->id}}
                                 <a href="{{route('profile',$thread->creator)}}">
-                                    {{$thread->creator->name}}</a> posted: {{ $thread->title
-                    }}
+                                    {{$thread->creator->name}}</a> posted: {{ $thread->title}}
+                            </div>
                         </span>
                             @can('update', $thread)
                                 <span class="flex">
@@ -47,5 +47,5 @@
                 </div>
             </div>
         </div>
-        <thread-view>
+    </thread-view>
 @endsection
