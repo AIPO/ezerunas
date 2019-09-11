@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ReplyController extends Controller
 {
@@ -36,8 +37,10 @@ class ReplyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param int $channelId
      * @param Thread $thread
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Model
+     * @throws ValidationException
      */
     public function store($channelId, Thread $thread)
     {
@@ -52,7 +55,7 @@ class ReplyController extends Controller
             ]
         );
         if(request()->expectsJson()){
-          return $reply;//->load('owner');
+          return $reply->load('owner');
         }
         return back();
     }

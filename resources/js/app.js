@@ -42,9 +42,3 @@ Vue.component('thread-view', require('./pages/Thread.vue').default);
 const app = new Vue({
     el: '#app'
 });
-
-$(document).ready(function() {
-    $('#editor').summernote({
-        height: 200,
-    });
-});
