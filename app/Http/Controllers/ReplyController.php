@@ -11,7 +11,7 @@ class ReplyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'index']);
     }
 
     /**
@@ -19,9 +19,9 @@ class ReplyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($channelId, Thread $thread)
     {
-        //
+      return $thread->replies()->paginate(1);
     }
 
     /**
@@ -54,8 +54,8 @@ class ReplyController extends Controller
                 'user_id' => auth()->id()
             ]
         );
-        if(request()->expectsJson()){
-          return $reply->load('owner');
+        if (request()->expectsJson()) {
+            return $reply->load('owner');
         }
         return back();
     }
@@ -91,9 +91,8 @@ class ReplyController extends Controller
      */
     public function update(Request $request, Reply $reply)
     {
-    //  dd($request);
+        //  dd($request);
         $reply->update(['body' =>request('body')]);
-
     }
 
     /**
@@ -106,8 +105,8 @@ class ReplyController extends Controller
     {
         $this->authorize('update', $reply);
         $reply->delete();
-        if(request()->expectsJson()){
-          return response(['status' => 'Reply deleted!']);
+        if (request()->expectsJson()) {
+            return response(['status' => 'Reply deleted!']);
         }
         session()->flash('message', 'Reply was deleted!');
         return back();

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="true">
+        <div v-if="signedIn">
             <div class="form-group">
                 <label for="body">Reply</label>
                 <textarea id="body" name="body" rows="10" class="form-control" placeholder="Have something to say?"
@@ -17,10 +17,16 @@
 
 <script>
     export default {
+        props:
+            ['endpoint'],
         data() {
             return {
-                body: "",
-                endpoint: '/threads/modi/1/replies'
+                body: ""
+            }
+        },
+        computed: {
+            signedIn() {
+                return window.App.signedIn;
             }
         },
         methods: {

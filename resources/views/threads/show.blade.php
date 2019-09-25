@@ -25,24 +25,23 @@
                     <div class="card-body">
                         {{$thread->body}}
                     </div>
+
+                    <hr>
+                    <replies :data="{{ $thread->replies}}" @added="repliesCount++" @removed="repliesCount--"></replies>
                 </div>
-                <hr>
-                <replies :data="{{ $thread->replies}}" @removed="repliesCount--"></replies>
-                {{-- @foreach ($replies as $reply)
-                @include('threads.reply')
-                @endforeach {{$replies->links()}} --}}
 
-            </div>
 
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        This thread published {{ $thread->created_at->diffForHumans()}}
-                    </div>
-                    <div class="card-body">
-                        Created by <a href="/profiles/{{$thread->creator->name}}"> {{$thread->creator->name}}</a> and
-                        has <strong><span v-text="repliesCount"></span></strong> comments.
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            This thread published {{ $thread->created_at->diffForHumans()}}
+                        </div>
+                        <div class="card-body">
+                            Created by <a href="/profiles/{{$thread->creator->name}}"> {{$thread->creator->name}}</a>
+                            and
+                            has <strong><span v-text="repliesCount"></span></strong> comments.
 
+                        </div>
                     </div>
                 </div>
             </div>

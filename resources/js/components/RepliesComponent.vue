@@ -1,34 +1,45 @@
 <template>
 <div>
-    <div v-for="(reply,index) in items">
+    <div v-for="(reply,index) in items" :keys="reply.id">
         <reply :data="reply" @deleted="remove(index)"></reply>
     </div>
-    <new-reply @created="add"></new-reply>
+    <new-reply :endpoint="endpoint" @created="add"></new-reply>
 </div>
 </template>
 
 <script>
 import Reply from './ReplyComponent.vue';
-import NewReply from './NewReplyComponent.vue'
+import NewReply from './NewReplyComponent.vue';
+import collection from '../mixins/collection.js';
+
 export default {
     components: {
         Reply,
         NewReply
     },
-    props: ['data'],
+    mixins: [collection],
     data() {
         return {
-            items: this.data,
+            dataSet: false,
+            endpoint: location.pathname + '/replies'
         }
     },
+    created() {
+        this.fetch();
+    },
     methods: {
-        add(reply) {
-            this.items.push(reply);
+        url() {
+            return location.pathname + '/replies';
         },
-        remove(index) {
-            this.items.splice(index, 1);
-            this.$emit('removed');
-            flash('Reply deleted!');
+        fetch() {
+            axios.get(this.url())
+                .then(this.refresh);
+        },
+        refresh({
+            data
+        }) {
+            this.dataSet = data;
+            this.items = data.data;
         }
     }
 }

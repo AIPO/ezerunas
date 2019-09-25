@@ -29,3 +29,7 @@ Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy');
 Route::delete('/replies/{reply}', 'ReplyController@destroy');
 
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
+/*
+api
+*/
+Route::get('/threads/{channel}/{thread}/replies', 'ReplyController@index');
