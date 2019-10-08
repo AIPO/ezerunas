@@ -52,6 +52,7 @@ export default {
     },
     computed: {
       ago(){
+        moment.locale('lt');
         return moment(this.data.created_at).fromNow();
       },
         signedIn() {

@@ -22,16 +22,17 @@ class ParticipateInForumTest extends TestCase
      *
      * @return void
      */
-    // public function testAuthenticatedUserCanParticipateInForumThreads()
-    // {
-    //     // user is authenticated
-    //     $this->signIn();
-    //     $thread = create(Thread::class);
-    //     $reply = make(Reply::class);
-    //     $this->post($thread->path() . '/replies', $reply->toArray());
-    //     //on threads/thread id see reply
-    //     $this->get($thread->path())->assertSee($reply->body);
-    // }
+    public function testAuthenticatedUserCanParticipateInForumThreads()
+    {
+        // user is authenticated
+        $this->signIn();
+        $thread = create(Thread::class);
+        $reply = make(Reply::class);
+        $this->post($thread->path() . '/replies', $reply->toArray());
+        //on threads/thread id see reply
+        //becouse we cant test response test database
+        $this->assertDatabaseHas('replies', ['body'=>$reply->body]);
+    }
 
     /**
      *
@@ -65,7 +66,7 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
         $reply = create(Reply::class, ['user_id' => auth()->id()]);
         $this->delete("/replies/{$reply->id}");
-      //  $this->assertStatus(302);
+        //  $this->assertStatus(302);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
     public function test_authorized_users_can_update_replies()
